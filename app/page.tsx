@@ -65,7 +65,7 @@ export default function Home() {
 
       <Section title="Piszę">
         <ul className="space-y-5">
-          {posts.map((post) => (
+          {posts.slice(0, 3).map((post) => (
             <li key={post.slug}>
               <Link href={`/blog/${post.slug}`} className="group block">
                 <span className="font-medium underline decoration-line underline-offset-4 group-hover:decoration-foreground">
@@ -78,6 +78,12 @@ export default function Home() {
             </li>
           ))}
         </ul>
+        <Link
+          href="/blog"
+          className="mt-8 inline-block text-sm text-muted hover:text-foreground"
+        >
+          Wszystkie wpisy ({posts.length}) →
+        </Link>
       </Section>
 
       <Section title="Poza pracą">

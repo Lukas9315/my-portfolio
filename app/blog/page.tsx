@@ -4,7 +4,8 @@ import { formatDate, posts } from "@/content/posts";
 
 export const metadata: Metadata = {
   title: "Blog",
-  description: "Notatki o Reakcie, zarządzaniu stanem i tym, co działa w praktyce.",
+  description:
+    "Notatki o Reakcie, zarządzaniu stanem i pracy z agentami — tylko to, co sprawdziłem w praktyce.",
 };
 
 export default function BlogPage() {
@@ -12,7 +13,7 @@ export default function BlogPage() {
     <div>
       <h1 className="text-2xl font-medium tracking-tight">Blog</h1>
       <p className="mt-2 text-muted">
-        Krótkie notatki o Reakcie i zarządzaniu stanem.
+        Krótkie notatki o Reakcie, stanie i pracy z agentami.
       </p>
 
       <ul className="mt-12 divide-y divide-line border-t border-line">
