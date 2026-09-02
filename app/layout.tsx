@@ -14,12 +14,26 @@ const geistMono = Geist_Mono({
   subsets: ["latin", "latin-ext"],
 });
 
+const title = `${profile.name} — ${profile.role}`;
+const description = profile.intro.join(" ");
+
 export const metadata: Metadata = {
-  title: {
-    default: `${profile.name} — ${profile.role}`,
-    template: `%s — ${profile.name}`,
+  metadataBase: new URL(profile.siteUrl),
+  title: { default: title, template: `%s — ${profile.name}` },
+  description,
+  alternates: { canonical: "./" },
+  authors: [{ name: profile.name, url: profile.siteUrl }],
+  creator: profile.name,
+  openGraph: {
+    type: "website",
+    locale: "pl_PL",
+    url: "./",
+    siteName: profile.name,
+    title,
+    description,
   },
-  description: profile.intro.join(" "),
+  twitter: { card: "summary_large_image", title, description },
+  robots: { index: true, follow: true },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

@@ -20,8 +20,28 @@ function Section({
 }
 
 export default function Home() {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name: profile.name,
+    jobTitle: profile.role,
+    email: `mailto:${profile.email}`,
+    url: profile.siteUrl,
+    sameAs: [profile.github],
+    address: { "@type": "PostalAddress", addressLocality: profile.location },
+    knowsAbout: stack,
+    worksFor: jobs.map((job) => ({
+      "@type": "Organization",
+      name: job.company,
+    })),
+  };
+
   return (
     <div>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <section className="pb-12">
         <h1 className="text-2xl font-medium tracking-tight">
           {profile.name}, {profile.role}
@@ -72,7 +92,8 @@ export default function Home() {
                   {post.title}
                 </span>
                 <span className="mt-1 block text-sm text-muted">
-                  {formatDate(post.date)} · {post.readingTime}
+                  <time dateTime={post.date}>{formatDate(post.date)}</time> ·{" "}
+                  {post.readingTime}
                 </span>
               </Link>
             </li>

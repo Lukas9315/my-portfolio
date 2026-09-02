@@ -4,6 +4,8 @@ export const profile = {
   location: "Gdańsk",
   email: "swierlik@o2.pl",
   github: "https://github.com/Lukas9315",
+  siteUrl:
+    process.env.NEXT_PUBLIC_SITE_URL ?? "https://lukas9315.github.io/my-portfolio",
   intro: [
     "Zaczynałem od szukania cudzych błędów. Dziś buduję aplikacje od pierwszego commita do wdrożenia — i nadal czytam kod jak tester.",
     "React, Next.js, Node. Najbardziej lubię ten moment, w którym coś wolnego zaczyna być szybkie.",

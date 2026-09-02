@@ -6,6 +6,7 @@ export const metadata: Metadata = {
   title: "Blog",
   description:
     "Notatki o Reakcie, zarządzaniu stanem i pracy z agentami — tylko to, co sprawdziłem w praktyce.",
+  alternates: { canonical: "/blog/" },
 };
 
 export default function BlogPage() {
@@ -21,7 +22,8 @@ export default function BlogPage() {
           <li key={post.slug}>
             <Link href={`/blog/${post.slug}`} className="group block py-8">
               <span className="font-mono text-xs text-muted">
-                {formatDate(post.date)} · {post.readingTime}
+                <time dateTime={post.date}>{formatDate(post.date)}</time> ·{" "}
+                {post.readingTime}
               </span>
               <h2 className="mt-2 font-medium underline decoration-line underline-offset-4 group-hover:decoration-foreground">
                 {post.title}

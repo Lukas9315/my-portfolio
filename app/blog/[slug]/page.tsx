@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { formatDate, getPost, posts, type Block } from "@/content/posts";
+import { profile } from "@/content/profile";
 
 export function generateStaticParams() {
   return posts.map((post) => ({ slug: post.slug }));
@@ -15,7 +16,25 @@ export async function generateMetadata({
 
   if (!post) return {};
 
-  return { title: post.title, description: post.summary };
+  return {
+    title: post.title,
+    description: post.summary,
+    alternates: { canonical: `/blog/${post.slug}/` },
+    openGraph: {
+      type: "article",
+      locale: "pl_PL",
+      url: `/blog/${post.slug}/`,
+      title: post.title,
+      description: post.summary,
+      publishedTime: post.date,
+      authors: [profile.name],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: post.title,
+      description: post.summary,
+    },
+  };
 }
 
 function Content({ block }: { block: Block }) {
@@ -47,11 +66,28 @@ export default async function PostPage({ params }: PageProps<"/blog/[slug]">) {
 
   if (!post) notFound();
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: post.title,
+    description: post.summary,
+    datePublished: post.date,
+    dateModified: post.date,
+    inLanguage: "pl-PL",
+    author: { "@type": "Person", name: profile.name, url: profile.siteUrl },
+    mainEntityOfPage: `${profile.siteUrl}/blog/${post.slug}/`,
+  };
+
   return (
     <article className="text-[0.95rem]">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <header className="border-b border-line pb-8">
         <span className="font-mono text-xs text-muted">
-          {formatDate(post.date)} · {post.readingTime}
+          <time dateTime={post.date}>{formatDate(post.date)}</time> ·{" "}
+          {post.readingTime}
         </span>
         <h1 className="mt-3 text-2xl font-medium tracking-tight text-balance">
           {post.title}
