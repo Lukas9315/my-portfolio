@@ -19,11 +19,11 @@ export type Job = {
 
 export const jobs: Job[] = [
   {
-    company: "LiveChat",
+    company: "Zynca",
     role: "Fullstack Engineer",
     period: "2024 — teraz",
     description:
-      "Firma produktowa — jeden produkt, długi horyzont, własne decyzje. Next.js na froncie, Node i PostgreSQL pod spodem. Pracuję nad panelem agenta i widgetem czatu, czyli kodem, który ląduje na cudzych stronach i musi być szybki oraz lekki.",
+      "Platforma rekrutacyjna ze Sztokholmu, ja zdalnie z Gdańska. Jeden produkt, długi horyzont, własne decyzje. Next.js na froncie, Node i PostgreSQL pod spodem — panel do zarządzania kandydatami, integracje z systemami klientów i sporo pracy przy RODO, bo dane kandydatów mają swoje reguły.",
   },
   {
     company: "Netguru",
