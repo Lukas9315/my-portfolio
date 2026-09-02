@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     default: `${profile.name} — ${profile.role}`,
     template: `%s — ${profile.name}`,
   },
-  description: profile.intro,
+  description: profile.intro.join(" "),
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
@@ -30,10 +30,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     >
       <body className="min-h-full flex flex-col">
         <div className="mx-auto flex w-full max-w-2xl flex-1 flex-col px-6">
-          <header className="flex items-center justify-between py-10 text-sm">
-            <Link href="/" className="font-medium hover:opacity-60">
-              {profile.name}
-            </Link>
+          <header className="py-10 text-sm">
             <nav className="flex gap-6 text-muted">
               <Link href="/" className="hover:text-foreground">
                 O mnie

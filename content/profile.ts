@@ -1,11 +1,13 @@
 export const profile = {
-  name: "Łukasz",
+  name: "Łukasz Świerlikowski",
   role: "Fullstack Engineer",
   location: "Gdańsk",
   email: "swierlik@o2.pl",
   github: "https://github.com/Lukas9315",
-  intro:
-    "Zacząłem w 2020 roku od testów manualnych. Klikałem cudze aplikacje tak długo, aż zacząłem je poprawiać sam. Dziś piszę front i back — najczęściej w React, Next.js i Node.",
+  intro: [
+    "Zaczynałem od szukania cudzych błędów. Dziś buduję aplikacje od pierwszego commita do wdrożenia — i nadal czytam kod jak tester.",
+    "React, Next.js, Node. Najbardziej lubię ten moment, w którym coś wolnego zaczyna być szybkie.",
+  ],
 };
 
 export type Job = {

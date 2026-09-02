@@ -29,9 +29,11 @@ export default function Home() {
         <p className="mt-1 text-muted">
           {profile.location} · rocznik 1999 · w IT od 2020
         </p>
-        <p className="mt-6 max-w-xl leading-relaxed text-balance">
-          {profile.intro}
-        </p>
+        <div className="mt-6 max-w-xl space-y-4 leading-relaxed">
+          {profile.intro.map((paragraph) => (
+            <p key={paragraph}>{paragraph}</p>
+          ))}
+        </div>
       </section>
 
       <Section title="Doświadczenie">
