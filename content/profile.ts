@@ -28,21 +28,14 @@ export const jobs: Job[] = [
     role: "Frontend Developer",
     period: "2022 — 2024",
     description:
-      "Dwa lata przy dużym sklepie internetowym. React, TypeScript, migracja z CRA na Next.js. Tutaj po raz pierwszy odpowiadałem za architekturę stanu w aplikacji, a nie tylko za pojedyncze komponenty.",
-  },
-  {
-    company: "Nordcode",
-    role: "QA Automation Engineer",
-    period: "2021 — 2022",
-    description:
-      "Przepisałem testy manualne na Cypress, później Playwright. Przy okazji zacząłem wysyłać własne pull requesty do frontu — i tak niepostrzeżenie przeszedłem na drugą stronę.",
+      "Dwa lata przy dużym sklepie internetowym. React, TypeScript, migracja z CRA na Next.js. Tutaj po raz pierwszy odpowiadałem za architekturę stanu w całej aplikacji, a nie tylko za pojedyncze komponenty.",
   },
   {
     company: "Testhouse",
-    role: "Manual QA",
-    period: "2020 — 2021",
+    role: "Manual QA → Junior Frontend Developer",
+    period: "2020 — 2022",
     description:
-      "Pierwsza praca w IT. Przypadki testowe, regresja, zgłoszenia w Jirze. Nauczyłem się tam czegoś, co zostało ze mną do dziś: zanim napiszesz kod, zastanów się, jak go zepsuć.",
+      "Zacząłem od testów manualnych: przypadki testowe, regresja, zgłoszenia w Jirze. Po roku zacząłem sam poprawiać to, co zgłaszałem, i przeszedłem do zespołu frontendowego. Zostało mi z tamtego czasu jedno: zanim napiszesz kod, zastanów się, jak go zepsuć.",
   },
 ];
 
