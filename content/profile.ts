@@ -17,21 +17,21 @@ export type Job = {
 
 export const jobs: Job[] = [
   {
-    company: "Amberline",
+    company: "LiveChat",
     role: "Fullstack Engineer",
     period: "2024 — teraz",
     description:
-      "Next.js na froncie, Node i PostgreSQL pod spodem. Platforma SaaS dla firm logistycznych — panel zleceń, integracje z systemami klientów i sporo pracy nad tym, żeby całość działała szybko także na słabym sprzęcie w magazynie.",
+      "Firma produktowa — jeden produkt, długi horyzont, własne decyzje. Next.js na froncie, Node i PostgreSQL pod spodem. Pracuję nad panelem agenta i widgetem czatu, czyli kodem, który ląduje na cudzych stronach i musi być szybki oraz lekki.",
   },
   {
-    company: "Baltic Apps",
+    company: "Netguru",
     role: "Frontend Developer",
     period: "2022 — 2024",
     description:
-      "Dwa lata przy dużym sklepie internetowym. React, TypeScript, migracja z CRA na Next.js. Tutaj po raz pierwszy odpowiadałem za architekturę stanu w całej aplikacji, a nie tylko za pojedyncze komponenty.",
+      "Dwa lata w projektach klienckich, głównie duży e-commerce. React, TypeScript, migracja z CRA na Next.js. Tutaj po raz pierwszy odpowiadałem za architekturę stanu w całej aplikacji, a nie tylko za pojedyncze komponenty.",
   },
   {
-    company: "Testhouse",
+    company: "intive",
     role: "Manual QA → Junior Frontend Developer",
     period: "2020 — 2022",
     description:
