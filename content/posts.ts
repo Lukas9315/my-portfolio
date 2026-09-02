@@ -288,18 +288,22 @@ export async function updateOrder(formData: FormData) {
     slug: "workflow-z-agentami",
     title: "Workflow z agentami — co u mnie działa",
     summary:
-      "Jeden agent do wszystkiego szybko przestaje wystarczać. Kilka wniosków z rozbijania pracy na kroki.",
-    date: "2026-08-20",
-    readingTime: "5 min",
+      "Jeden agent do wszystkiego szybko przestaje wystarczać. Jak rozbijam pracę na etapy, gdzie to się sypie i kiedy w ogóle się opłaca.",
+    date: "2026-09-01",
+    readingTime: "9 min",
     body: [
       {
         type: "p",
-        text: "Najpierw miałem jeden długi prompt: napraw buga, dopisz testy, zaktualizuj dokumentację. Działało przy małych zmianach, a przy większych rozsypywało się zawsze w tym samym miejscu — agent gubił początek zadania, zanim doszedł do końca.",
+        text: "Najpierw miałem jeden długi prompt: napraw buga, dopisz testy, zaktualizuj dokumentację. Działało przy małych zmianach, a przy większych rozsypywało się zawsze w tym samym miejscu — agent gubił początek zadania, zanim doszedł do końca. Dostawałem poprawkę, przy okazji zrefaktorowany sąsiedni moduł i testy do czegoś, o co nie prosiłem.",
+      },
+      {
+        type: "p",
+        text: "Po kilku miesiącach prób mam workflow, który sprawdza się u mnie na tyle, że wróciłem do niego po urlopie bez zaglądania w notatki. Poniżej jak to wygląda i czego się przy tym nauczyłem.",
       },
       { type: "h2", text: "Krok pierwszy: rozbicie na etapy" },
       {
         type: "p",
-        text: "Zamiast jednego zadania mam teraz kilka mniejszych, każde z jasnym wejściem i wyjściem. Rozpoznanie kodu, plan, implementacja, weryfikacja. Każdy etap dostaje tylko to, czego potrzebuje.",
+        text: "Zamiast jednego zadania mam teraz kilka mniejszych, każde z jasnym wejściem i wyjściem. Każdy etap dostaje tylko to, czego potrzebuje — i nic ponad to.",
       },
       {
         type: "code",
@@ -310,37 +314,117 @@ export async function updateOrder(formData: FormData) {
       },
       {
         type: "p",
-        text: "Największy zysk daje krok drugi. Plan to kilkanaście linijek, które czytam w minutę — i w tej minucie wyłapuję nieporozumienie, które inaczej kosztowałoby mnie pół godziny czytania gotowego diffa.",
+        text: "Największy zysk daje krok drugi. Plan to kilkanaście linijek, które czytam w minutę — i w tej minucie wyłapuję nieporozumienie, które inaczej kosztowałoby mnie pół godziny czytania gotowego diffa. Poprawienie planu to jedno zdanie. Poprawienie kodu napisanego według złego planu to zwykle wywalenie wszystkiego i drugie podejście.",
+      },
+      { type: "h2", text: "Jak wygląda dobry plan" },
+      {
+        type: "p",
+        text: "Nie chodzi o dokument. Chodzi o listę tak konkretną, żeby dała się zakwestionować. Jeśli po przeczytaniu planu nie umiem wskazać, co jest w nim błędne, to znaczy że jest za ogólny.",
+      },
+      {
+        type: "code",
+        text: `# źle — nie ma czego kwestionować
+- popraw obsługę błędów w module zamówień
+- dodaj testy
+
+# dobrze — widzę założenia i mogę je odrzucić
+- app/orders/actions.ts: owinąć update w try/catch,
+  zwracać { error } zamiast rzucać
+- components/order-form.tsx: pokazać błąd pod formularzem,
+  nie w toaście (toast ginie przy scrollu)
+- nie ruszamy app/orders/page.tsx — tam błąd łapie error.tsx`,
+      },
+      {
+        type: "p",
+        text: "Ta ostatnia linijka jest najważniejsza. Napisanie, czego nie zmieniamy, ucina połowę niespodzianek w diffie. Agent sam z siebie nie postawi sobie granicy — jeśli zobaczy coś, co można poprawić, to poprawi.",
       },
       { type: "h2", text: "Krok drugi: osobny agent do sprawdzania" },
       {
         type: "p",
-        text: "Ten sam agent, który napisał kod, jest wobec niego bezkrytyczny. Dlatego weryfikację odpala osobno, bez historii wcześniejszej rozmowy, z jednym zadaniem: znajdź przypadek, w którym to nie zadziała.",
+        text: "Ten sam agent, który napisał kod, jest wobec niego bezkrytyczny. Zapytany „czy to na pewno dobrze?” przyzna ci rację niezależnie od tego, po której stronie stoisz. Dlatego weryfikację odpalam osobno, bez historii wcześniejszej rozmowy, z jednym zadaniem: znajdź przypadek, w którym to nie zadziała.",
       },
       {
         type: "p",
-        text: "To najbliższa rzecz do code review, jaką udało mi się zautomatyzować. Nie wyłapie wszystkiego, ale głupie błędy — pominiętą obsługę błędu, brak stanu ładowania, założenie że tablica nigdy nie jest pusta — łapie zaskakująco skutecznie.",
+        text: "Brak historii jest tu kluczowy. Agent, który widział, jak powstawał ten kod, zna wszystkie uzasadnienia i podświadomie ich broni. Agent, który dostaje sam diff, zachowuje się jak recenzent w pull requeście — czyli tak, jak trzeba.",
+      },
+      {
+        type: "p",
+        text: "To najbliższa rzecz do code review, jaką udało mi się zautomatyzować. Nie wyłapie problemów architektonicznych, ale głupie błędy łapie zaskakująco skutecznie: pominiętą obsługę odrzuconego promise'a, brak stanu ładowania, założenie że tablica nigdy nie jest pusta, zapomniane revalidatePath po mutacji.",
+      },
+      {
+        type: "p",
+        text: "Jedna zasada, której się trzymam: każde zgłoszenie z weryfikacji sprawdzam sam, zanim je naprawię. Jakieś 30 procent to fałszywe alarmy — kod, który wygląda podejrzanie, ale w tym kontekście jest poprawny. Naprawianie ich w ciemno psuje działające rzeczy.",
+      },
+      { type: "h2", text: "Kontekst mieszka w repo, nie w promptcie" },
+      {
+        type: "p",
+        text: "Długo wklejałem te same wyjaśnienia do każdej rozmowy: że używamy pnpm, że dane pobieramy w Server Components, że nie dodajemy nowych bibliotek bez rozmowy. Teraz to jest plik w repozytorium, który agent czyta sam.",
+      },
+      {
+        type: "code",
+        text: `# AGENTS.md — fragment
+- pnpm, nie npm
+- dane pobieramy w Server Components; useEffect + fetch to ostatnia opcja
+- nowa zależność = najpierw pytanie, potem instalacja
+- testy w Playwright, obok komponentu`,
+      },
+      {
+        type: "p",
+        text: "Efekt jest większy, niż się wydaje. Zniknęła cała kategoria poprawek typu „u nas się tego tak nie robi”, a przy okazji nowa osoba w zespole ma wreszcie jedno miejsce, w którym te ustalenia są zapisane. Dokumentacja, której nikt nie czytał, zaczęła się opłacać, bo teraz czyta ją narzędzie.",
+      },
+      { type: "h2", text: "Testy jako punkt odniesienia" },
+      {
+        type: "p",
+        text: "Agent świetnie sobie radzi, kiedy ma sposób sprawdzenia, czy skończył. Bez tego zatrzymuje się w momencie, w którym uzna zadanie za zrobione — a to nie zawsze ten sam moment, o który mi chodziło.",
+      },
+      {
+        type: "p",
+        text: "Dlatego przy trudniejszych rzeczach zaczynam od testu, który nie przechodzi. Wtedy „gotowe” przestaje być kwestią opinii i staje się kwestią wyniku polecenia. Ta odwrócona kolejność — najpierw test, potem implementacja — nigdy nie weszła mi w krew przy pisaniu ręcznym, a przy agentach zrobiła się naturalna.",
       },
       { type: "h2", text: "Co idzie równolegle, a co nie" },
       {
         type: "ul",
         items: [
-          "Równolegle: przegląd kodu w kilku wymiarach, sprawdzenie kilku hipotez naraz, przeszukiwanie dużego repo.",
-          "Po kolei: wszystko, co dotyka tych samych plików. Dwóch agentów edytujących ten sam moduł to gwarantowany konflikt.",
+          "Równolegle: przegląd kodu w kilku wymiarach naraz, sprawdzenie kilku hipotez o przyczynie buga, przeszukiwanie dużego repo, generowanie kilku wariantów tego samego komponentu do porównania.",
+          "Po kolei: wszystko, co dotyka tych samych plików. Dwóch agentów edytujących ten sam moduł to gwarantowany konflikt i pół godziny sklejania.",
+          "Wcale: migracje bazy, cokolwiek na produkcji, zmiany w konfiguracji CI. Tu wolę być wolniejszy i mieć pewność.",
         ],
       },
-      { type: "h2", text: "Trzy rzeczy, których się nauczyłem" },
+      { type: "h2", text: "Gdzie to się sypie" },
+      {
+        type: "p",
+        text: "Trzy scenariusze, w które wpadłem na tyle razy, że nauczyłem się je rozpoznawać po pierwszych objawach.",
+      },
+      {
+        type: "ul",
+        items: [
+          "Pełzający zakres. Zadanie było na trzy pliki, diff ma czternaście. Zwykle wina leży w moim promptcie: nie napisałem, czego nie ruszać.",
+          "Pewna siebie bzdura. Kod wygląda idealnie i odwołuje się do funkcji, której nie ma. Zdarza się najczęściej przy świeżych wersjach bibliotek — API zmieniło się po treningu modelu, a on nadal pamięta stare.",
+          "Naprawianie objawu. Test nie przechodzi, więc agent zmienia test. Formalnie zielono, merytorycznie katastrofa. Dlatego przy weryfikacji trzymam zasadę, że testy są tylko do czytania.",
+        ],
+      },
+      { type: "h2", text: "Cztery rzeczy, których się nauczyłem" },
       {
         type: "ul",
         items: [
           "Wąskie zadanie bije szczegółową instrukcję. Krótki, konkretny cel działa lepiej niż strona wytycznych.",
-          "Kontekst to koszt. Im więcej wrzucę, tym więcej agent gubi. Mniej znaczy więcej.",
+          "Kontekst to koszt, nie zasób. Im więcej wrzucę, tym więcej agent gubi po drodze. Mniej znaczy więcej.",
+          "Granice są ważniejsze od wymagań. Zdanie o tym, czego nie ruszać, oszczędza więcej czasu niż akapit o tym, co zrobić.",
           "Człowiek zostaje przy decyzjach. Automatyzuję szukanie i pisanie, nie zgodę na merge.",
         ],
       },
+      { type: "h2", text: "Kiedy to się w ogóle opłaca" },
       {
         type: "p",
-        text: "I na koniec zdrowa dawka realizmu: to nie jest darmowe. Cztery kroki to cztery razy więcej zapytań, a bywają zadania, przy których szybciej otworzę plik i poprawię trzy linijki sam. Rozbijanie na etapy zaczyna się opłacać dopiero wtedy, gdy zadanie nie mieści mi się w głowie na raz.",
+        text: "Na koniec zdrowa dawka realizmu, bo tego brakuje mi w większości tekstów na ten temat. Cztery kroki to cztery razy więcej zapytań i realny koszt. Bywają zadania, przy których szybciej otworzę plik i poprawię trzy linijki sam — i robię tak codziennie.",
+      },
+      {
+        type: "p",
+        text: "Rozbijanie na etapy zaczyna się opłacać dopiero wtedy, gdy zadanie nie mieści mi się w głowie na raz: wejście w nieznany moduł, refaktor dotykający kilkunastu plików, bug, którego przyczyny nie znam. Przy zmianie copy w przycisku to czysta strata czasu.",
+      },
+      {
+        type: "p",
+        text: "I jedno zdanie, które powtarzam sobie za każdym razem: nie przyjmuję diffa, którego nie rozumiem. Cały ten workflow ma jeden cel — nie napisać więcej kodu, tylko szybciej dojść do momentu, w którym potrafię wyjaśnić, dlaczego każda linijka jest tam, gdzie jest.",
       },
     ],
   },
